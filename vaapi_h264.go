@@ -1,3 +1,4 @@
+//go:build dragonfly || freebsd || linux || netbsd || openbsd || solaris
 // +build dragonfly freebsd linux netbsd openbsd solaris
 
 package vaapi_h264
@@ -95,6 +96,10 @@ func (e *encoder) Read() ([]byte, func(), error) {
 	e.forceIDR = false
 	encoded := C.GoBytes(unsafe.Pointer(s), rc)
 	return encoded, func() {}, err
+}
+
+func (e *encoder) Controller() codec.EncoderController {
+	return e
 }
 
 func (e *encoder) SetBitRate(b int) error {
